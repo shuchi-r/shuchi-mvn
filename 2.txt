@@ -1,0 +1,185 @@
+2 a.
+
+plugins {
+
+    id 'application'
+
+}
+
+repositories (
+
+    mavenCentral()
+
+}
+
+dependencies { 
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1 
+    
+}
+
+
+application{
+      mainClass='org.example.Main'
+}
+
+src/main/java-> main.java modify
+
+gradle run
+
+copy docs folder or create
+
+terminal: git init, git add ., git commit -m "Deploy website using Gradle", git remote add origin <website>, git push -u origin master
+
+git hub setting->page
+
+2.no id java
+plugins {
+    id 'java'
+    id 'application'
+    }
+
+ repositories {
+
+    mavenCentral()
+     }
+
+ dependencies {
+
+     testImplementation 'org.seleniumhq.selenium:selenium-java:4.32.0'
+     testImplementation 'org.testng:testng:7.4.0'
+ }
+test{
+    useTestNG()
+}
+ application {
+     mainClass = 'org.example.Main'
+ }
+
+src/test-> new package-> org.test
+
+package org.test;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+import static org.testng.Assert.assertTrue;
+public class WebpageTest {
+
+    private static WebDriver driver;
+
+    @BeforeTest
+    public void openBrowser() throws InterruptedException {
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        Thread.sleep(2000);
+        driver.get("https://shuchi-r.github.io/shuchi-gradle/");
+    }
+
+    @Test
+    public void titleValidationTest() {
+        String actualTitle = driver.getTitle();
+        String expectedTitle = "My Simple Website";
+        Assert.assertEquals(actualTitle, expectedTitle);
+        assertTrue(true, "Title should contain 'Tripillar'");
+    }
+
+    @AfterTest
+    public void closeBrowser() throws InterruptedException {
+        Thread.sleep(1000);
+        driver.quit();
+
+    }
+}
+
+gradle test
+
+plugins {
+    id'java'
+    id 'application'
+    }
+
+ repositories {
+
+    mavenCentral()
+     }
+
+ dependencies {
+
+     testImplementation 'org.seleniumhq.selenium:selenium-java:4.32.0'
+     testImplementation 'org.testng:testng:7.4.0'
+ }
+test{
+    useTestNG()
+}
+ application {
+     mainClass = 'org.example.Main'
+ }
+jar{
+    manifest{
+        attributes 'Main-Class':'org.example.Main'
+    }
+}
+gradle jar
+
+java -jar build/libs/jar name
+
+
+2b.
+
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+plugins {
+    kotlin("jvm") version "2.1.20"
+    application
+}
+
+group = "org.example"
+version = "1.0-SNAPSHOT"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation(kotlin("stdlib"))
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+}
+
+tasks.test {
+    useJUnitPlatform()
+}
+tasks.withType<KotlinCompile> {
+    kotlinOptions.jvmTarget = "23"  // Match with your JDK version
+}
+
+application {
+    mainClass.set("MainKt")  // Update this if using a packag
+}
+
+src/main/koylin
+
+ package org.example
+ fun main() {
+   println("Hello, Gradle with Kotlin DSL!")
+ }
+
+ ./gradlew build
+ ./gradlew run
+
+
+tasks.register<Jar>("fatJar") {
+    archiveClassifier.set("all")
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest {
+        attributes["Main-Class"] = "MainKt"
+    }
+    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+    with(tasks.jar.get() as CopySpec)
+}
+
+./gradlew fatJar
+
+java -jar build/libs/MVNGRDKOTLINDEMO-1.0-SNAPSHOT-all.jar

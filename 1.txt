@@ -1,0 +1,151 @@
+1.
+<dependencies>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>4.32.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>7.11.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+src/main/resource create index.html,style.css,logo.png
+
+index.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Simple Website</title>
+    <link rel="stylesheet" href="style.css">
+    </head>
+<body>
+
+<header>
+    <img src="logo.png" alt="Logo">
+</header>
+<h1>Welcome to My Simple Website</h1>
+</body>
+</html>
+
+style.css
+
+body {
+   font-family: Arial, sans-serif;
+   background-color: #f4f4f4;
+   text-align: center;
+}
+header img {
+ width: 100px;
+}
+
+
+terminal: git init, git add .,git commit -m "initial", git remote add origin <git website>
+
+<build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase> <!-- Before packaging -->
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.basedir}/docs</outputDirectory> <!-- Deploy to /docs folder -->
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                  <includes>
+                                      <include>**/* </include> <!-- Copy all files in src/main/resources -->
+                                  </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+         </plugins>
+</build>
+
+terminal: mvn clean install, git commit -m "deploy site to GitHub pages" , git push origin master
+GitHub->setting -> page
+
+src/test-> new package-> org.test
+3.
+import static org.testng.Assert.assertTrue;
+ public class WebpageTest {
+     private static WebDriver driver;
+
+     @BeforeTest
+     public void openBrowser() throws InterruptedException {
+         driver = new ChromeDriver();
+         driver.manage().window().maximize();
+         Thread.sleep(2000);
+         driver.get("https://shuchi-r.github.io/shuchi-mvn/"); // "Note: You should use your GITHUB-URL here...!!!"
+     }
+
+     @Test
+     public void titleValidationTest(){
+         String actualTitle = driver.getTitle();
+         String expectedTitle = "My Simple Website";
+         Assert.assertEquals(actualTitle, expectedTitle);
+         assertTrue(true, "i found website");
+     }
+
+     @AfterTest
+     public void closeBrowser() throws InterruptedException {
+         Thread.sleep(1000);
+         driver.quit();
+     }
+  }
+  
+run
+
+ <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-jar-plugin</artifactId>
+                 <version>3.2.0</version>
+                 <configuration>
+                     <!-- Specify the main class to be executed -->
+                     <archive>
+                         <manifestEntries>
+                             <Main-Class>org.example.Main</Main-Class> <!-- Replace with your main class path-->
+                         </manifestEntries>
+                     </archive>
+                 </configuration>
+            </plugin>
+src/main/java/main.java modify
+
+terminal: mvn clean package, java -jar target/jar name
+
+<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.12.1</version> <!-- Use latest version -->
+            </plugin>
+        </plugins>
+    </build>
+
+terminal: mvn site
+
+<distributionManagement>
+        <repository>
+            <id>local-repo</id>
+            <url>file:///C:\Users\shuchitha R\Downloads\my</url>
+        </repository>
+    </distributionManagement>
+</project>
+
+terminal:mvn deploy
+
+
